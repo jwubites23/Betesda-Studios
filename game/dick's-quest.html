@@ -17,12 +17,12 @@ var controls;  // An OrbitControls object that is used to implement
                // the camera around the scene.)
 
 var character = new THREE.Object3D();
-var positionX=0;
-var positionY=0;
 
 var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
-
+var normalMovement = true;
+var posX = 0;
+var posZ = Math.PI/2;
 /**
  *  The render function draws the scene.
  */
@@ -43,7 +43,7 @@ function createWorld() {
     // ------------------- Make a camera with viewpoint light ----------------------
     
     camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 200);
-    camera.position.set(0,50,100);
+    camera.position.set(0,20,50);
     var light;  // A light shining from the direction of the camera; moves with the camera.
     light = new THREE.DirectionalLight();
     light.position.set(0,0,1);
@@ -94,22 +94,45 @@ function updateForFrame() {
 
 function move(event){
     var code = event.keyCode;
-    switch( code ) {
-	    case 87: // forward "w"-key
-            character.translateZ(-0.1);
-        break;
-        case 83: // backward "s"-key
-            character.rotateY(-Math.PI);
-            character.translateZ(0.1);
-        break;
-        case 68: // right "d"-key
-            character.rotateY(Math.PI/2);
-            character.translateX(0.1);
-        break;
-        case 65: // left "a"-key
-            character.rotateY(-Math.PI/2);
-            character.translateX(-0.1);
-        break;
+    if (normalMovement == true){
+        switch( code ) {
+            case 87: // forward "w"-key
+                character.translateZ(-0.5);
+            break;
+            case 83: // backward "s"-key
+                character.translateZ(0.5);
+            break;
+            case 68: // right "d"-key
+                character.translateX(0.5);
+                character.rotateY(-Math.PI/100);
+            break;
+            case 65: // left "a"-key
+                character.translateX(-0.5);
+                character.rotateY(Math.PI/100);
+            break;
+        }
+    }
+    else {
+        switch( code ) {
+            case 87: // forward "w"-key
+                posZ += Math.PI/100;
+                character.translateZ(Math.sin(posZ));
+            break;
+            case 83: // backward "s"-key
+                posZ -= Math.PI/100;
+                character.translateZ(Math.sin(posZ));
+            break;
+            case 68: // right "d"-key
+                posX += Math.PI/100;
+                character.translateZ(Math.cos(posX));
+                character.rotateY(-Math.PI/100);
+            break;
+            case 65: // left "a"-key
+                posX -= Math.PI/100;
+                character.translateZ(Math.cos(posX));
+                character.rotateY(Math.PI/100);
+            break;
+        }
     }
 }
 
@@ -172,6 +195,10 @@ function doFrame() {
     }
 }
 
+function doSinMovementCheckbox() {
+    normalMovement = false;
+}
+
 /*----------------------------- INITIALIZATION ----------------------------------------
 
 /**
@@ -195,7 +222,9 @@ function init() {
         return;
     }
     document.getElementById("animateCheckbox").checked = false;
+    document.getElementById("sinMovementCheckbox").checked = false;
     document.getElementById("animateCheckbox").onchange = doAnimateCheckbox;
+    document.getElementById("sinMovementCheckbox").onchange = doSinMovementCheckbox;
     document.addEventListener("keydown", move, false);
 
     createWorld();
@@ -207,7 +236,7 @@ function init() {
 </head>
 <body onload="init()">
 
-<h2>Three.js Demo</h2>
+<h2>Dick's Very Bad Terrible No Good Morning</h2>
 
 <noscript>
    <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>
@@ -218,6 +247,7 @@ function init() {
 
 <p>
    <label><input type="checkbox" id="animateCheckbox"><b>Animate</b></label>
+   <label><input type="checkbox" id="sinMovementCheckbox"><b>Sinusoidal Movement</b></label>
    <b style="margin-left:50px">Use the mouse to rotate the model.</b>
 </p>
 
