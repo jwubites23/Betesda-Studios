@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
-<title>CS 424 Lab 9</title>
+<title>Dick's Very Bad Terrible No Good Morning</title>
 <script src="three.js"></script>
 <script src="OrbitControls.js"></script>
 <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
@@ -42,13 +42,13 @@ function createWorld() {
     
     // ------------------- Make a camera with viewpoint light ----------------------
     
-    camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 100);
-    camera.position.z = 100;
+    camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 200);
+    camera.position.set(0,50,100);
     var light;  // A light shining from the direction of the camera; moves with the camera.
     light = new THREE.DirectionalLight();
     light.position.set(0,0,1);
     camera.add(light);
-    scene.add(camera);
+    character.add(camera);
     scene.add( new THREE.AmbientLight( 0x404040 ) );
     scene.add( new THREE.DirectionalLight( 0xffffff, 0.5 ) ); // dim light shining from above
     
@@ -60,10 +60,11 @@ function createWorld() {
     }); 
 
     loader.load('./assets/characters/richard.glb',function(gltf){
+        gltf.scene.children[0].position.set(0,-1,0);
+        gltf.scene.children[0].rotation.set(0,-Math.PI,0);
         character.add(gltf.scene.children[0]);
     });  
 
-    character.position.set(0,-1,0);
     scene.add(character);
     
 } // end function createWorld()
@@ -94,20 +95,19 @@ function updateForFrame() {
 function move(event){
     var code = event.keyCode;
     switch( code ) {
-	    case 87:
-            camera.translateZ(-0.1) ;
+	    case 87: // forward "w"-key
             character.translateZ(-0.1);
         break;
-        case 83:
-            camera.translateZ(0.1) ; 
+        case 83: // backward "s"-key
+            character.rotateY(-Math.PI);
             character.translateZ(0.1);
         break;
-        case 68:
-            camera.translateX(0.1) ;  
+        case 68: // right "d"-key
+            character.rotateY(Math.PI/2);
             character.translateX(0.1);
         break;
-        case 65:
-            camera.translateX(-0.1) ;  
+        case 65: // left "a"-key
+            character.rotateY(-Math.PI/2);
             character.translateX(-0.1);
         break;
     }
