@@ -57,12 +57,12 @@ function createWorld() {
         scene.add(gltf.scene.children[1]);
     }); 
 
-    loader.load('./assets/characters/richard2.glb',function(gltf){
+    loader.load('./assets/characters/richard.glb',function(gltf){
         gltf.scene.children[2].position.set(0,0,0);
         gltf.scene.children[2].rotation.set(0,-Math.PI,0);
         character.add(gltf.scene.children[2]);
     }); 
-    
+
     scene.add(character);
     
 } // end function createWorld()
