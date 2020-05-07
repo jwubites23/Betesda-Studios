@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
-<title>Dick's Very Bad Terrible No Good Morning</title>
+<title>Richard's Very Bad Terrible No Good Morning</title>
 <script src="three.js"></script>
 <script src="OrbitControls.js"></script>
 <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
@@ -42,8 +42,8 @@ function createWorld() {
     
     // ------------------- Make a camera with viewpoint light ----------------------
     
-    camera = new THREE.PerspectiveCamera(30, canvas.width/canvas.height, 0.1, 200);
-    camera.position.set(0,20,50);
+    camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 0.1, 200);
+    camera.position.set(0,10,15);
     var light;  // A light shining from the direction of the camera; moves with the camera.
     light = new THREE.DirectionalLight();
     light.position.set(0,0,1);
@@ -54,17 +54,15 @@ function createWorld() {
     
     //------------------- Create the scene's visible objects ----------------------
     loader.load('./assets/full-scene.glb',function(gltf){
-        gltf.scene.children.slice(3,).forEach(function(element){
-            scene.add(element);
-        });
+        scene.add(gltf.scene.children[1]);
     }); 
 
-    loader.load('./assets/characters/richard.glb',function(gltf){
-        gltf.scene.children[0].position.set(0,-1,0);
-        gltf.scene.children[0].rotation.set(0,-Math.PI,0);
-        character.add(gltf.scene.children[0]);
-    });  
-
+    loader.load('./assets/characters/richard2.glb',function(gltf){
+        gltf.scene.children[2].position.set(0,0,0);
+        gltf.scene.children[2].rotation.set(0,-Math.PI,0);
+        character.add(gltf.scene.children[2]);
+    }); 
+    
     scene.add(character);
     
 } // end function createWorld()
@@ -236,7 +234,7 @@ function init() {
 </head>
 <body onload="init()">
 
-<h2>Dick's Very Bad Terrible No Good Morning</h2>
+<h2>Richard's Very Bad Terrible No Good Morning</h2>
 
 <noscript>
    <p style="color: #AA0000; font-weight: bold">Sorry, but this page requires JavaScript!</p>
