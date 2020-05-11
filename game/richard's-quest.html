@@ -42,8 +42,8 @@ function createWorld() {
     
     // ------------------- Make a camera with viewpoint light ----------------------
     
-    camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 0.1, 200);
-    camera.position.set(0,10,15);
+    camera = new THREE.PerspectiveCamera(90, canvas.width/canvas.height, 0.1, 200);
+    camera.position.set(0,5,5);
     var light;  // A light shining from the direction of the camera; moves with the camera.
     light = new THREE.DirectionalLight();
     light.position.set(0,0,1);
@@ -53,8 +53,12 @@ function createWorld() {
     scene.add( new THREE.DirectionalLight( 0xffffff, 0.5 ) ); // dim light shining from above
     
     //------------------- Create the scene's visible objects ----------------------
+
+
     loader.load('./assets/full-scene.glb',function(gltf){
-        scene.add(gltf.scene.children[1]);
+        
+        scene.add(gltf.scene);
+        console.log(scene.children)
     }); 
 
     loader.load('./assets/characters/richard.glb',function(gltf){
