@@ -140,7 +140,7 @@ function createWorld() {
     
     //------------------- Create the scene's visible objects ----------------------
     loader.load('./assets/full-scene.glb',function(gltf){
-        scene.add(gltf.scene.children[1]);
+        scene.add(gltf.scene);
     }); 
 
     loader.load('./assets/characters/richard.glb',function(gltf){
