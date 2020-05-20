@@ -130,7 +130,8 @@ function createWorld() {
     // ------------------- Make a camera with viewpoint light ----------------------
     
     camera = new THREE.PerspectiveCamera(45, canvas.width/canvas.height, 0.1, 200);
-    camera.position.set(0,3,8);
+    camera.position.set(0,3,-8);
+    camera.rotation.set(0,Math.PI,0);
     var light;  // A light shining from the direction of the camera; moves with the camera.
     light = new THREE.DirectionalLight();
     light.position.set(0,0,1);
@@ -145,13 +146,12 @@ function createWorld() {
     }); 
 
     loader.load('./assets/characters/richard.glb',function(gltf){
-        gltf.scene.children[2].position.set(0,0,0);
-        gltf.scene.children[2].rotation.set(0,-Math.PI,0);
-        console.log(gltf.scene.children[2]);
         character.add(gltf.scene.children[2]);
+        character.name = 'richard';
+        character.position.set(62,0,-47);
+        character.rotation.set(0,-Math.PI/2,0);
     }); 
     scene.add(character);
-    
 } // end function createWorld()
 
 function makeTexture(imageURL, material) {
@@ -177,44 +177,57 @@ function updateForFrame() {
     
 }
 
+var keymap = {};
 function move(event){
-    var code = event.keyCode;
+    keymap[event.key] = event.type == 'keydown';
     if (normalMovement == true){
-        switch( code ) {
-            case 87: // forward "w"-key
-                character.translateZ(-0.5);
-            break;
-            case 83: // backward "s"-key
-                character.translateZ(0.5);
-            break;
-            case 68: // right "d"-key
-                character.translateX(0.5);
-                character.rotateY(-Math.PI/100);
-            break;
-            case 65: // left "a"-key
-                character.translateX(-0.5);
-                character.rotateY(Math.PI/100);
-            break;
+        if (keymap['w'] && keymap['d']){
+            character.translateZ(0.5);
+            character.rotateY(-Math.PI/100);
+        }
+        else if (keymap['w'] && keymap['a']){
+            character.translateZ(0.5);
+            character.rotateY(Math.PI/100);
+        }
+        else if (keymap['s'] && keymap['d']){
+            character.translateZ(-0.5);
+            character.rotateY(Math.PI/100);
+        }
+        else if (keymap['s'] && keymap['a']){
+            character.translateZ(-0.5);
+            character.rotateY(Math.PI/100);
+        }
+        else if (keymap['w']){
+            character.translateZ(0.5);
+        }
+        else if (keymap['s']){
+            character.translateZ(-0.5);
+        }
+        else if (keymap['a']){
+            character.rotateY(-Math.PI/100);
+        }
+        else if (keymap['d']){
+            character.rotateY(Math.PI/100);
         }
     }
     else {
         switch( code ) {
             case 87: // forward "w"-key
                 posZ += Math.PI/100;
-                character.translateZ(Math.sin(posZ));
+                character.translateX(Math.sin(posZ));
             break;
             case 83: // backward "s"-key
                 posZ -= Math.PI/100;
-                character.translateZ(Math.sin(posZ));
+                character.translateX(Math.sin(posZ));
             break;
             case 68: // right "d"-key
                 posX += Math.PI/100;
-                character.translateZ(Math.cos(posX));
+                character.translateX(Math.cos(posX));
                 character.rotateY(-Math.PI/100);
             break;
             case 65: // left "a"-key
                 posX -= Math.PI/100;
-                character.translateZ(Math.cos(posX));
+                character.translateX(Math.cos(posX));
                 character.rotateY(Math.PI/100);
             break;
         }
@@ -301,6 +314,7 @@ function init() {
     document.getElementById("sinMovementCheckbox").checked = false;
     document.getElementById("sinMovementCheckbox").onchange = doSinMovementCheckbox;
     document.addEventListener("keydown", move, false);
+    document.addEventListener("keyup",move, false);
 
 
 
