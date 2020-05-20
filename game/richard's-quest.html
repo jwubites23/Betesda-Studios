@@ -104,14 +104,14 @@ window.onload = function () {
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
         display.textContent = minutes + ':' + seconds;
-        //var run = document.getElementById("animateCheckbox").checked;
-    //     if (minutes== 0 && seconds == 0){
-    //         if (confirm("You lost! Do you want to restart?")) {
-    //           location.reload()
-    //          } else {
-    //             location.replace("https://www.youtube.com/watch?v=aIG0pBQw8X4")
-    //             }
-	// 	}
+        var run = document.getElementById("animateCheckbox").checked;
+        if (minutes== 0 && seconds == 0){
+            if (confirm("You lost! Do you want to restart?")) {
+              location.reload()
+             } else {
+                location.replace("https://www.youtube.com/watch?v=aIG0pBQw8X4")
+                }
+		}
     }
     init();
 };
