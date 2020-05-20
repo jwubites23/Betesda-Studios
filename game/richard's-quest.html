@@ -18,6 +18,7 @@ var controls;  // An OrbitControls object that is used to implement
                // the camera around the scene.)
 
 var character = new THREE.Object3D();
+var environment = new THREE.Object3D();
 
 var animating = false;  // Set to true when an animation is in progress.
 var frameNumber = 0;  // Frame number is advanced by 1 for each frame while animating.
@@ -104,13 +105,13 @@ window.onload = function () {
         seconds = seconds < 10 ? "0" + seconds : seconds;
         display.textContent = minutes + ':' + seconds;
         //var run = document.getElementById("animateCheckbox").checked;
-        if (minutes== 0 && seconds == 0){
-            if (confirm("You lost! Do you want to restart?")) {
-              location.reload()
-             } else {
-                location.replace("https://www.youtube.com/watch?v=aIG0pBQw8X4")
-                }
-		}
+    //     if (minutes== 0 && seconds == 0){
+    //         if (confirm("You lost! Do you want to restart?")) {
+    //           location.reload()
+    //          } else {
+    //             location.replace("https://www.youtube.com/watch?v=aIG0pBQw8X4")
+    //             }
+	// 	}
     }
     init();
 };
@@ -139,13 +140,14 @@ function createWorld() {
     scene.add( new THREE.DirectionalLight( 0xffffff, 0.5 ) ); // dim light shining from above
     
     //------------------- Create the scene's visible objects ----------------------
-    loader.load('./assets/full-scene.glb',function(gltf){
+    loader.load('./assets/scene.glb',function(gltf){
         scene.add(gltf.scene);
     }); 
 
     loader.load('./assets/characters/richard.glb',function(gltf){
         gltf.scene.children[2].position.set(0,0,0);
         gltf.scene.children[2].rotation.set(0,-Math.PI,0);
+        console.log(gltf.scene.children[2]);
         character.add(gltf.scene.children[2]);
     }); 
     scene.add(character);
