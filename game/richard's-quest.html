@@ -177,15 +177,6 @@ function updateForFrame() {
     
 }
 
-// var keyqueue = [];
-// function moveQueue(event){
-//     keymap[event.key] = event.type == 'keydown';
-//     while (keymap['w'] || keymap['a'] || keymap['s'] || keymap['d']){
-//         move(keymap);
-//         keymap[event.key] = event.type == 'keydown';
-//     }
-// }
-
 var keymap = {};
 function move(keymap){
     if (normalMovement == true){
@@ -335,8 +326,6 @@ function init() {
     }
     document.getElementById("sinMovementCheckbox").checked = false;
     document.getElementById("sinMovementCheckbox").onchange = doSinMovementCheckbox;
-    // document.addEventListener("keydown", moveQueue, false);
-    // document.addEventListener("keyup",moveQueue, false);
     document.addEventListener("keydown", function(ev){keymap[ev.key] = ev.type == 'keydown';move(keymap);}, false);
     document.addEventListener("keyup",function(ev){keymap[ev.key] = ev.type == 'keydown';move(keymap);}, false);
 
