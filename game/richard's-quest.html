@@ -177,9 +177,17 @@ function updateForFrame() {
     
 }
 
+// var keyqueue = [];
+// function moveQueue(event){
+//     keymap[event.key] = event.type == 'keydown';
+//     while (keymap['w'] || keymap['a'] || keymap['s'] || keymap['d']){
+//         move(keymap);
+//         keymap[event.key] = event.type == 'keydown';
+//     }
+// }
+
 var keymap = {};
-function move(event){
-    keymap[event.key] = event.type == 'keydown';
+function move(keymap){
     if (normalMovement == true){
         if (keymap['w'] && keymap['d']){
             character.translateZ(0.5);
@@ -211,25 +219,39 @@ function move(event){
         }
     }
     else {
-        switch( code ) {
-            case 87: // forward "w"-key
-                posZ += Math.PI/100;
-                character.translateX(Math.sin(posZ));
-            break;
-            case 83: // backward "s"-key
-                posZ -= Math.PI/100;
-                character.translateX(Math.sin(posZ));
-            break;
-            case 68: // right "d"-key
-                posX += Math.PI/100;
-                character.translateX(Math.cos(posX));
-                character.rotateY(-Math.PI/100);
-            break;
-            case 65: // left "a"-key
-                posX -= Math.PI/100;
-                character.translateX(Math.cos(posX));
-                character.rotateY(Math.PI/100);
-            break;
+        if (keymap['w'] && keymap['d']){
+            posZ += Math.PI/100;
+            character.translateZ(Math.sin(posZ));
+            character.rotateY(-Math.PI/100);
+        }
+        else if (keymap['w'] && keymap['a']){
+            posZ += Math.PI/100;
+            character.translateZ(Math.sin(posZ));
+            character.rotateY(Math.PI/100);
+        }
+        else if (keymap['s'] && keymap['d']){
+            posZ -= Math.PI/100;
+            character.translateZ(Math.sin(posZ));
+            character.rotateY(Math.PI/100);
+        }
+        else if (keymap['s'] && keymap['a']){
+            posZ -= Math.PI/100;
+            character.translateZ(Math.sin(posZ));
+            character.rotateY(-Math.PI/100);
+        }
+        else if (keymap['w']){
+            posZ += Math.PI/100;
+            character.translateZ(Math.sin(posZ));
+        }
+        else if (keymap['s']){
+            posZ -= Math.PI/100;
+            character.translateZ(Math.sin(posZ));
+        }
+        else if (keymap['a']){
+            character.rotateY(-Math.PI/100);
+        }
+        else if (keymap['d']){
+            character.rotateY(Math.PI/100);
         }
     }
 }
@@ -313,8 +335,10 @@ function init() {
     }
     document.getElementById("sinMovementCheckbox").checked = false;
     document.getElementById("sinMovementCheckbox").onchange = doSinMovementCheckbox;
-    document.addEventListener("keydown", move, false);
-    document.addEventListener("keyup",move, false);
+    // document.addEventListener("keydown", moveQueue, false);
+    // document.addEventListener("keyup",moveQueue, false);
+    document.addEventListener("keydown", function(ev){keymap[ev.key] = ev.type == 'keydown';move(keymap);}, false);
+    document.addEventListener("keyup",function(ev){keymap[ev.key] = ev.type == 'keydown';move(keymap);}, false);
 
 
 
